@@ -1019,6 +1019,26 @@ class MultiPlotter:
         """Close the multi plotter."""
         self._window.close()
 
+    def screenshot(
+        self,
+        filename: Optional[str] = None,
+        transparent_background: Optional[bool] = None,
+    ) -> np.ndarray:
+        """Take a screenshot."""
+        self.app.processEvents()
+        width = self._plotter.size().width()
+        height = self._plotter.size().height()
+        img = np.zeros((height * self._nrows, width * self._ncols, 3), dtype=np.uint8)
+        for row in range(self._nrows):
+            for col in range(self._ncols):
+                plotter = self._plotters[row * self._ncols + col]
+                img[
+                    height * row : height * (row + 1), width * col : width * (col + 1)
+                ] = plotter.screenshot(transparent_background=transparent_background)
+        if filename is not None:
+            Image.fromarray(img).save(filename)
+        return img
+
     def __setitem__(self, idx: Tuple[int, int], plotter: Any) -> None:
         """Set a valid plotter in the grid.
 

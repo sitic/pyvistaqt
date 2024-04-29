@@ -51,6 +51,7 @@ from typing import Any, Callable, Dict, Generator, List, Optional, Tuple, Type, 
 import numpy as np  # type: ignore
 import pyvista
 import scooby  # type: ignore
+from PIL import Image
 from pyvista import global_theme
 
 try:
